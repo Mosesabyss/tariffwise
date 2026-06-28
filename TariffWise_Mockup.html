@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TariffWise — Prototype Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15232f;
+    --ink-soft:#42535f;
+    --ink-faint:#8493a0;
+    --paper:#eef0ec;
+    --panel:#ffffff;
+    --line:#d7dcd6;
+    --line-soft:#e7eae5;
+    --pine:#1d6b58;
+    --pine-soft:#e4efea;
+    --amber:#9a6a16;
+    --amber-soft:#f5ecdb;
+    --shadow:0 1px 2px rgba(21,35,47,.05),0 12px 30px rgba(21,35,47,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+  /* page frame */
+  .doc{max-width:1080px;margin:0 auto;padding:56px 28px 80px}
+  .doc-head{margin-bottom:40px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+  .doc-eyebrow{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--pine);font-weight:600;margin-bottom:12px;
+  }
+  .doc-title{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
+  .doc-sub{color:var(--ink-soft);font-size:15px;max-width:62ch;margin:0}
+  .doc-meta{margin-top:18px;display:flex;gap:26px;flex-wrap:wrap;font-size:12px;color:var(--ink-faint)}
+  .doc-meta b{color:var(--ink-soft);font-weight:600}
+
+  /* screen block */
+  .screen{margin-top:44px}
+  .screen-cap{
+    display:flex;align-items:baseline;gap:14px;margin-bottom:14px;
+  }
+  .screen-num{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--paper);background:var(--ink);padding:4px 9px;border-radius:3px;letter-spacing:.04em;
+  }
+  .screen-name{font-size:14px;font-weight:600;color:var(--ink)}
+  .screen-note{font-size:13px;color:var(--ink-faint);margin-left:auto;max-width:46ch;text-align:right}
+
+  /* app window */
+  .app{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;box-shadow:var(--shadow);
+  }
+  .app-bar{
+    display:flex;align-items:center;gap:18px;
+    padding:13px 20px;border-bottom:1px solid var(--line-soft);background:#fbfcfb;
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;letter-spacing:-.01em}
+  .brand-mark{
+    width:22px;height:22px;border-radius:5px;background:var(--pine);
+    display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;font-family:"IBM Plex Mono",monospace;
+  }
+  .app-nav{margin-left:auto;display:flex;gap:22px;font-size:13px;color:var(--ink-faint)}
+  .app-nav .on{color:var(--ink);font-weight:600}
+  .app-body{padding:26px 28px}
+
+  h2.scr{font-size:19px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+  p.scr-sub{font-size:13px;color:var(--ink-soft);margin:0 0 22px}
+
+  /* form */
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+  .field label .q{color:var(--ink-faint);font-weight:400;margin-left:6px}
+  .control{
+    width:100%;border:1px solid var(--line);border-radius:7px;padding:10px 12px;
+    font-size:13px;color:var(--ink);background:#fff;font-family:inherit;
+  }
+  .control.filled{color:var(--ink)}
+  .select{position:relative}
+  .select::after{content:"▾";position:absolute;right:13px;top:10px;color:var(--ink-faint);font-size:12px}
+  .upload{
+    border:1.5px dashed var(--line);border-radius:7px;padding:16px;text-align:center;
+    font-size:12px;color:var(--ink-faint);background:#fbfcfb;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;border:none;cursor:default;
+    background:var(--ink);color:#fff;font-weight:600;font-size:13px;
+    padding:11px 18px;border-radius:7px;font-family:inherit;
+  }
+  .btn.pine{background:var(--pine)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-row{display:flex;gap:10px;margin-top:6px}
+
+  /* two col interview */
+  .split{display:grid;grid-template-columns:1fr 270px;gap:24px}
+  @media(max-width:720px){.split{grid-template-columns:1fr}}
+  .qa{display:flex;flex-direction:column;gap:14px}
+  .bubble-q{
+    background:#f4f6f4;border:1px solid var(--line-soft);border-radius:9px 9px 9px 3px;
+    padding:11px 13px;font-size:13px;max-width:90%;
+  }
+  .bubble-a{
+    align-self:flex-end;background:var(--ink);color:#fff;border-radius:9px 9px 3px 9px;
+    padding:9px 13px;font-size:13px;max-width:80%;
+  }
+  .answer-box{
+    border:1px solid var(--line);border-radius:7px;padding:10px 12px;font-size:13px;
+    color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;
+  }
+  .answer-box span.send{color:var(--pine);font-weight:600;font-size:12px}
+  .working{
+    background:#fbfcfb;border:1px solid var(--line);border-radius:9px;padding:16px;height:fit-content;
+  }
+  .working h4{margin:0 0 12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  .fact{display:flex;justify-content:space-between;font-size:12px;padding:8px 0;border-bottom:1px solid var(--line-soft)}
+  .fact:last-of-type{border-bottom:none}
+  .fact .k{color:var(--ink-soft)}
+  .fact .v{font-weight:600;color:var(--ink)}
+  .working-code{
+    margin-top:14px;padding-top:14px;border-top:2px solid var(--line);
+  }
+  .working-code .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
+  .working-code .hd{font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:600;color:var(--pine)}
+  .working-code .hd small{font-size:12px;color:var(--ink-soft);display:block;font-family:"Inter";font-weight:400;margin-top:2px}
+
+  /* result */
+  .stamp{
+    border:2px solid var(--ink);border-radius:10px;padding:20px 22px;position:relative;
+    background:linear-gradient(180deg,#fff,#fbfcfb);
+  }
+  .stamp .tag{
+    position:absolute;top:14px;right:16px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--pine);font-weight:700;border:1px solid var(--pine);border-radius:4px;padding:3px 8px;
+  }
+  .stamp .code{font-family:"IBM Plex Mono",monospace;font-size:32px;font-weight:600;letter-spacing:.01em;color:var(--ink)}
+  .stamp .desc{font-size:13px;color:var(--ink-soft);margin-top:6px;max-width:54ch}
+  .conf{display:flex;align-items:center;gap:12px;margin:18px 0 4px;font-size:12px;color:var(--ink-soft)}
+  .conf-bar{flex:1;height:7px;background:var(--line-soft);border-radius:4px;overflow:hidden}
+  .conf-bar i{display:block;height:100%;width:87%;background:var(--pine)}
+  .why{border:1px solid var(--line);border-radius:9px;padding:16px;margin-top:18px}
+  .why h4{margin:0 0 10px;font-size:13px;font-weight:700}
+  .why ol{margin:0;padding-left:18px;font-size:13px;color:var(--ink-soft)}
+  .why ol li{margin-bottom:4px}
+  .why .ptr{margin-top:8px;font-size:12px;color:var(--ink-faint);font-style:italic}
+  .ask{border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin-top:14px;background:#fbfcfb}
+  .ask h4{margin:0 0 10px;font-size:12px;letter-spacing:.04em;color:var(--ink-soft);font-weight:600}
+  .disclaimer{
+    margin-top:16px;font-size:12px;color:var(--ink-soft);background:var(--amber-soft);
+    border:1px solid #ecdcbf;border-radius:7px;padding:10px 13px;
+  }
+  .disclaimer b{color:var(--amber)}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{
+    text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);
+    font-weight:600;padding:0 12px 10px;border-bottom:1px solid var(--line)
+  }
+  tbody td{padding:13px 12px;border-bottom:1px solid var(--line-soft)}
+  tbody tr:last-child td{border-bottom:none}
+  td.code{font-family:"IBM Plex Mono",monospace;font-weight:500}
+  .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;display:inline-block}
+  .pill.saved{background:var(--pine-soft);color:var(--pine)}
+  .pill.review{background:var(--amber-soft);color:var(--amber)}
+  .link{color:var(--pine);font-weight:600;text-decoration:none}
+
+  /* audit record */
+  .record{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft)}
+  @media(max-width:720px){.rec-grid{grid-template-columns:1fr}}
+  .rec-cell{background:#fff;padding:18px 20px}
+  .rec-cell h5{margin:0 0 10px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  .rec-cell .big{font-size:15px;font-weight:600;margin-bottom:4px}
+  .rec-cell .code-lg{font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:600;color:var(--pine)}
+  .rec-cell .meta{font-size:12px;color:var(--ink-soft);line-height:1.7}
+  .rec-cell ol{margin:6px 0 0;padding-left:16px;font-size:12px;color:var(--ink-soft)}
+  .steps{display:flex;align-items:center;gap:0;padding:18px 20px;background:#fbfcfb;border-top:1px solid var(--line-soft);flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--ink-soft);flex:1;min-width:140px}
+  .step .dot{width:22px;height:22px;border-radius:50%;background:var(--pine);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:600;font-family:"IBM Plex Mono",monospace;flex:none}
+  .step .ln{flex:1;height:2px;background:var(--line);min-width:14px}
+
+  /* annotation key */
+  .annot{margin-top:54px;border-top:2px solid var(--ink);padding-top:24px}
+  .annot h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 18px;font-weight:600}
+  .annot-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 34px}
+  @media(max-width:720px){.annot-grid{grid-template-columns:1fr}}
+  .anote{display:flex;gap:11px;font-size:12px;color:var(--ink-soft)}
+  .anote .n{
+    flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--pine);color:var(--pine);
+    display:grid;place-items:center;font-size:11px;font-weight:600;font-family:"IBM Plex Mono",monospace;
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="doc-head">
+    <div class="doc-eyebrow">TariffWise · Prototype Mockup</div>
+    <h1 class="doc-title">Footwear classification, end to end</h1>
+    <p class="doc-sub">An AI tariff-classification tool for small and mid-size importers. The flow moves from rough product input, through an AI interview that pins down the facts that change the code, to a documented result and a stored audit record.</p>
+    <div class="doc-meta">
+      <span><b>Worked example</b>&nbsp; Women's running shoe</span>
+      <span><b>Niche</b>&nbsp; Footwear (HTS Chapter 64)</span>
+      <span><b>Fidelity</b>&nbsp; High-fidelity, five screens</span>
+    </div>
+  </header>
+
+  <!-- SCREEN 1 -->
+  <section class="screen">
+    <div class="screen-cap">
+      <span class="screen-num">01 / 05</span>
+      <span class="screen-name">Product input</span>
+      <span class="screen-note">The user enters what they know. The AI fills the gaps in the next step.</span>
+    </div>
+    <div class="app">
+      <div class="app-bar">
+        <div class="brand"><span class="brand-mark">TW</span>TariffWise</div>
+        <nav class="app-nav"><span class="on">New classification</span><span>History</span><span>Settings</span></nav>
+      </div>
+      <div class="app-body">
+        <h2 class="scr">Classify a new product</h2>
+        <p class="scr-sub">Enter product details. The AI asks follow-up questions before suggesting a code.</p>
+        <div class="field">
+          <label>Product name <span class="q">ⓘ</span></label>
+          <div class="control filled">Women's running shoe</div>
+        </div>
+        <div class="field">
+          <label>Product category <span class="q">ⓘ</span></label>
+          <div class="select"><div class="control filled">Footwear</div></div>
+        </div>
+        <div class="field">
+          <label>Material description</label>
+          <div class="control filled">Textile upper, rubber outsole, metal eyelets</div>
+        </div>
+        <div class="field">
+          <label>Upload product spec or image</label>
+          <div class="upload">Drop a spec sheet or product photo, or browse</div>
+        </div>
+        <div class="btn-row"><button class="btn pine">Start classification</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2 -->
+  <section class="screen">
+    <div class="screen-cap">
+      <span class="screen-num">02 / 05</span>
+      <span class="screen-name">AI classification interview</span>
+      <span class="screen-note">The AI asks only the questions that change the code. The working code updates live.</span>
+    </div>
+    <div class="app">
+      <div class="app-bar">
+        <div class="brand"><span class="brand-mark">TW</span>TariffWise</div>
+        <nav class="app-nav"><span class="on">New classification</span><span>History</span><span>Settings</span></nav>
+      </div>
+      <div class="app-body">
+        <h2 class="scr">AI classification interview</h2>
+        <p class="scr-sub">A short interview that mirrors how a customs expert finds a product's essential character.</p>
+        <div class="split">
+          <div class="qa">
+            <div class="bubble-q">What material covers the largest surface area of the upper?</div>
+            <div class="bubble-a">Textile, about 70 percent</div>
+            <div class="bubble-q">Does the shoe cover the ankle?</div>
+            <div class="bubble-a">No, it sits below the ankle</div>
+            <div class="bubble-q">Is there a protective metal toe cap?</div>
+            <div class="answer-box">Type your answer <span class="send">Send</span></div>
+          </div>
+          <aside class="working">
+            <h4>Working classification</h4>
+            <div class="fact"><span class="k">Upper material</span><span class="v">Textile (majority)</span></div>
+            <div class="fact"><span class="k">Ankle coverage</span><span class="v">No</span></div>
+            <div class="fact"><span class="k">Metal toe cap</span><span class="v">No</span></div>
+            <div class="working-code">
+              <div class="lbl">Suggested heading</div>
+              <div class="hd">6404<small>Footwear, textile upper</small></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 -->
+  <section class="screen">
+    <div class="screen-cap">
+      <span class="screen-num">03 / 05</span>
+      <span class="screen-name">Result and rationale</span>
+      <span class="screen-note">A documented code, a numbered rationale, and a chat to question it.</span>
+    </div>
+    <div class="app">
+      <div class="app-bar">
+        <div class="brand"><span class="brand-mark">TW</span>TariffWise</div>
+        <nav class="app-nav"><span class="on">New classification</span><span>History</span><span>Settings</span></nav>
+      </div>
+      <div class="app-body">
+        <h2 class="scr">Suggested classification</h2>
+        <p class="scr-sub">Review the code and the reasoning before you accept it.</p>
+        <div class="stamp">
+          <span class="tag">Cleared for review</span>
+          <div class="code">6404.11.9000</div>
+          <div class="desc">Footwear with outer soles of rubber and uppers of textile materials.</div>
+        </div>
+        <div class="conf"><span>Confidence, high</span><div class="conf-bar"><i></i></div></div>
+        <div class="why">
+          <h4>Why this code</h4>
+          <ol>
+            <li>The upper is mostly textile.</li>
+            <li>The shoe does not cover the ankle.</li>
+            <li>There is no metal toe cap.</li>
+          </ol>
+          <div class="ptr">These facts point to heading 6404.</div>
+        </div>
+        <div class="ask">
+          <h4>Ask about this result</h4>
+          <div class="bubble-a" style="max-width:90%;margin-bottom:10px">Why not classify it as leather footwear?</div>
+          <div class="bubble-q">The upper is mostly textile by surface area, so leather headings do not apply.</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn pine">Accept and save to audit trail</button>
+          <button class="btn ghost">Request expert review</button>
+        </div>
+        <div class="disclaimer"><b>Decision support only.</b> TariffWise provides classification research. The importer or a licensed broker makes the final decision.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 4 -->
+  <section class="screen">
+    <div class="screen-cap">
+      <span class="screen-num">04 / 05</span>
+      <span class="screen-name">History and audit trail</span>
+      <span class="screen-note">Every decision and its reasoning is stored and exportable.</span>
+    </div>
+    <div class="app">
+      <div class="app-bar">
+        <div class="brand"><span class="brand-mark">TW</span>TariffWise</div>
+        <nav class="app-nav"><span>New classification</span><span class="on">History</span><span>Settings</span></nav>
+      </div>
+      <div class="app-body">
+        <h2 class="scr">Classification history</h2>
+        <p class="scr-sub">All past classifications with their codes, dates, and status.</p>
+        <table>
+          <thead><tr><th>Product</th><th>HTS code</th><th>Date</th><th>Status</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td>Women's running shoe</td><td class="code">6404.11.9000</td><td>14 Jun 2026</td><td><span class="pill saved">Saved</span></td><td><a class="link">View</a></td></tr>
+            <tr><td>Leather sandal</td><td class="code">6403.99.6075</td><td>12 Jun 2026</td><td><span class="pill saved">Saved</span></td><td><a class="link">View</a></td></tr>
+            <tr><td>Canvas sneaker</td><td class="code">6404.19.9000</td><td>10 Jun 2026</td><td><span class="pill review">Expert review</span></td><td><a class="link">View</a></td></tr>
+            <tr><td>Rubber rain boot</td><td class="code">6401.92.9000</td><td>09 Jun 2026</td><td><span class="pill saved">Saved</span></td><td><a class="link">View</a></td></tr>
+          </tbody>
+        </table>
+        <div class="btn-row" style="margin-top:20px"><button class="btn ghost">Export audit log</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 5 -->
+  <section class="screen">
+    <div class="screen-cap">
+      <span class="screen-num">05 / 05</span>
+      <span class="screen-name">Single audit record</span>
+      <span class="screen-note">An exportable record that defends the classification if customs audits the entry.</span>
+    </div>
+    <div class="app">
+      <div class="app-bar">
+        <div class="brand"><span class="brand-mark">TW</span>TariffWise</div>
+        <nav class="app-nav"><span>New classification</span><span class="on">History</span><span>Settings</span></nav>
+      </div>
+      <div class="app-body">
+        <h2 class="scr">Audit record</h2>
+        <p class="scr-sub">Women's running shoe · saved 14 Jun 2026</p>
+        <div class="record">
+          <div class="rec-grid">
+            <div class="rec-cell">
+              <h5>Product details</h5>
+              <div class="big">Women's running shoe</div>
+              <div class="meta">Category, Footwear<br>Material, textile upper, rubber outsole</div>
+            </div>
+            <div class="rec-cell">
+              <h5>Final classification</h5>
+              <div class="code-lg">6404.11.9000</div>
+              <div class="meta">Footwear, rubber soles, textile uppers.</div>
+            </div>
+            <div class="rec-cell">
+              <h5>Captured facts</h5>
+              <div class="meta">Upper, textile (majority)<br>Ankle coverage, no<br>Metal toe cap, no</div>
+            </div>
+            <div class="rec-cell">
+              <h5>Rationale</h5>
+              <ol>
+                <li>The upper is mostly textile.</li>
+                <li>The shoe does not cover the ankle.</li>
+                <li>There is no metal toe cap.</li>
+              </ol>
+              <div class="meta" style="margin-top:6px;font-style:italic">These facts point to heading 6404.</div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step"><span class="dot">1</span>Product entered</div><span class="ln"></span>
+            <div class="step"><span class="dot">2</span>AI interview completed</div><span class="ln"></span>
+            <div class="step"><span class="dot">3</span>Code suggested</div><span class="ln"></span>
+            <div class="step"><span class="dot">4</span>Accepted by user</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANNOTATION KEY -->
+  <section class="annot">
+    <h3>Annotation key</h3>
+    <div class="annot-grid">
+      <div class="anote"><span class="n">1</span><span>The user enters what they know. The AI fills the gaps in the next step through targeted questions.</span></div>
+      <div class="anote"><span class="n">2</span><span>Footwear is one of the highest-risk categories for misclassification, so it anchors the worked example.</span></div>
+      <div class="anote"><span class="n">3</span><span>The AI asks only the questions that change the code: upper material, ankle height, toe construction.</span></div>
+      <div class="anote"><span class="n">4</span><span>The interview mirrors how a customs expert interrogates a product to find its essential character.</span></div>
+      <div class="anote"><span class="n">5</span><span>The user can interrogate the result in plain language. This builds trust and surfaces the reasoning.</span></div>
+      <div class="anote"><span class="n">6</span><span>The disclaimer keeps the tool within permissible decision support. It suggests and explains. It does not file the entry.</span></div>
+      <div class="anote"><span class="n">7</span><span>Every classification and its reasoning is stored, creating the record that reasonable care requires.</span></div>
+      <div class="anote"><span class="n">8</span><span>An exportable record defends the classification if customs audits the entry. This is the core point of differentiation.</span></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
